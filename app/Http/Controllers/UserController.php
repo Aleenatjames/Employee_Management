@@ -1,0 +1,100 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class UserController extends Controller implements HasMiddleware
+{
+    public static function middleware():array
+    {
+        return[
+            new Middleware('permission:view users',only: ['index']),
+            new Middleware('permission:edit users',only: ['edit']),
+            //new Middleware('permission:create permissions',only: ['create']),
+            //new Middleware('permission:delete permissions',only: ['destroy']),
+        ];
+    }
+    
+    public function index()
+    {
+        $users=User::latest()->paginate(10);
+        return view('users.list',[
+            'users' => $users,
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+       $user=User::findOrFail($id);
+       $roles=Role::orderBy('name','ASC')->get();
+       $hasRoles=$user->roles->pluck('id');
+       return view('users.edit',[
+        'user' => $user,
+        'roles' =>$roles,
+        'hasRoles' => $hasRoles
+       ]);
+    }
+
+   
+    public function update(Request $request, string $id)
+    {
+        $user=User::findOrFail($id);
+        $validateData = $request->validate([
+            'name' => 'required|min:3',
+            'email' => 'required|email|unique:users,email,'.$id.',id'
+        ]);
+
+        if ($validateData) {
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            $user->syncRoles($request->role);
+
+            return redirect()->route('users.index')->with('success','User updated successfully');
+ 
+        }else{
+            return redirect()->route('users.edit',$id)->withInput()->withErrors($validateData);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
