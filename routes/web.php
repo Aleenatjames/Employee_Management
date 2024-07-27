@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -51,6 +52,14 @@ Route::middleware('auth')->group(function () {
      Route::get('/company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
      Route::post('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
      Route::delete('/company/{id}/delete', [CompanyController::class, 'destroy'])->name('company.destroy');
+
+     //Employees
+     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+     Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
+     Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+     Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+     Route::post('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
+     Route::delete('/employees/{id}/delete', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 });
 
 
