@@ -9,11 +9,12 @@ use App\Models\EmployeeDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
     public function index(){
-        $employees=Employee::orderBy('created_at','DESC')->paginate(25);
+        $employees = Employee::with('company')->paginate(25);
         return view('employees.list',[
             'employees'=>$employees ,
            
@@ -33,14 +34,14 @@ class EmployeeController extends Controller
             $validateData = $request->validate([
                 'name' => 'required|string|max:255|unique:employees',
                 'email' => 'required|email|max:255|unique:employees',
-                'password' => 'required|string|min:8|confirmed',
+                'password' => 'required|string|min:8',
                
             ]);
         
             DB::beginTransaction();
         
             try {
-                
+
                 // Create the employee record
                 $employee = new Employee();
                 $employee->name = $request->name;
@@ -63,6 +64,21 @@ class EmployeeController extends Controller
                 // Update employee with department ID
                 $employee->department_id = $department->id;
                 $employee->save();
+
+                $roleName = 'Director'; // Change this to the default role you want to assign
+
+               // Retrieve the existing role by name
+                  $role = Role::where('name', $roleName)->first();
+
+               if (!$role) {
+                // If role does not exist, create a new role
+                 $role = Role::create(['name' => $roleName]);
+                }
+
+        // Assign the retrieved or newly created role to the employee
+        $employee->assignRole($role->name);
+
+        Log::info('Role assigned successfully', ['employee_id' => $employee->id, 'role_id' => $role->id]);
 
                 // Commit the transaction
                 DB::commit();

@@ -20,6 +20,7 @@
                         <th class="px-6 py-3 text-left">ID</th>
                         <th class="px-6 py-3 text-left">Name</th>
                         <th class="px-6 py-3 text-left">Email</th>
+                        <th class="px-6 py-3 text-left">Company</th>
                         <th class="px-6 py-3 text-left" >Created</th>
                         <th class="px-6 py-3 text-center">Action</th>
                     </tr>
@@ -38,6 +39,9 @@
                         <td class="px-6 py-3 text-left">
                             {{$employee->email}}
                         </td>
+                        <td class="px-6 py-3 text-left">
+                       {{ $employee->company->name }}
+                       </td>
                         <td class="px-6 py-3 text-left">
                             {{\Carbon\Carbon::parse($employee->created_at)->format('d,M,Y')}}
                         </td>

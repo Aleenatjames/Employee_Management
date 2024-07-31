@@ -14,4 +14,8 @@ class Company extends Model
         'location',
 
     ];
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
 }
