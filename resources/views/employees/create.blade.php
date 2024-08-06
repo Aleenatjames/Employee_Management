@@ -1,18 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-    <div class="flex justify-between">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Employee / Create') }}
-        </h2>
-        <a href="{{ route('employees.index') }}" class="bg-slate-700 rounded py-2 my-2 px-3 text-white">Back</a>
-    </div>
+        <div class="flex justify-between">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Employee / Create') }}
+            </h2>
+            <a href="{{ route('employees.index') }}" class="bg-slate-700 rounded py-2 my-2 px-3 text-white">Back</a>
+        </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('employees.store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ route('employees.store') }}" method="post">
                         @csrf
                         <div class="grid grid-cols-2 gap-6">
                             <!-- Name Field -->
@@ -38,34 +38,71 @@
                             </div>
 
                             <!-- Password Field -->
-                            <div class="col-span-">
+                            <div class="col-span-1">
                                 <label for="password" class="text-lg font-medium">Password</label>
                                 <div class="mt-2">
-                                    <input value="{{ old('password') }}" type="text" id="password" name="password" class="w-full border-gray-300 shadow-sm rounded-lg" placeholder="Enter Password">
+                                    <input value="{{ old('password') }}" type="password" id="password" name="password" class="w-full border-gray-300 shadow-sm rounded-lg" placeholder="Enter Password">
                                     @error('password')
                                     <p class="invalid-feedback text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
 
-                            <!-- Company Dropdown -->
+                            <!-- Designation Field -->
                             <div class="col-span-1">
-                                <label for="company_id" class="text-lg font-medium">Company</label>
+                                <label for="designation" class="text-lg font-medium">Designation</label>
                                 <div class="mt-2">
-                                    <select id="company_id" name="company_id" class="w-full border-gray-300 shadow-sm rounded-lg">
-                                        <option value="">Select Company</option>
-                                        @foreach($companies as $company)
-                                            <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>{{ $company->name }}</option>
+                                    <input value="{{ old('designation') }}" type="text" id="designation" name="designation" class="w-full border-gray-300 shadow-sm rounded-lg" placeholder="Enter Designation">
+                                    @error('designation')
+                                    <p class="invalid-feedback text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Departments Checkboxes -->
+                            <div class="col-span-2">
+                                <label class="text-lg font-medium">Departments</label>
+                                <div class="mt-2 space-y-2">
+                                    @foreach($departments as $department)
+                                        <div>
+                                            <input 
+                                                type="checkbox" 
+                                                id="department-{{ $department->id }}" 
+                                                name="departments[]" 
+                                                value="{{ $department->id }}" 
+                                                {{ in_array($department->id, old('departments', [])) ? 'checked' : '' }}
+                                            >
+                                            <label for="department-{{ $department->id }}" class="ml-2">
+                                                {{ $department->name }}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                    @error('departments')
+                                    <p class="invalid-feedback text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <!-- Role Dropdown -->
+                            <div class="col-span-2">
+                                <label for="role" class="text-lg font-medium">Role</label>
+                                <div class="mt-2">
+                                    <select id="role" name="role" class="w-full border-gray-300 shadow-sm rounded-lg">
+                                        <option value="">Select Role</option>
+                                        @foreach($roles as $role)
+                                            <option value="{{ $role->name }}" {{ old('role') == $role->name ? 'selected' : '' }}>
+                                                {{ ucfirst($role->name) }}
+                                            </option>
                                         @endforeach
                                     </select>
-                                    @error('company_id')
+                                    @error('role')
                                     <p class="invalid-feedback text-red-400">{{ $message }}</p>
                                     @enderror
                                 </div>
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="col-span-3">
+                            <div class="col-span-2">
                                 <button class="bg-slate-700 rounded py-3 my-2 px-5 text-white w-full">Submit</button>
                             </div>
                         </div>

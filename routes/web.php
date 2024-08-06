@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
@@ -46,20 +47,24 @@ Route::middleware('auth')->group(function () {
      Route::delete('/users/{id}/delete', [RoleController::class, 'destroy'])->name('users.destroy');
 
      //Company
-     Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
-     Route::get('/company/create', [CompanyController::class, 'create'])->name('company.create');
-     Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
-     Route::get('/company/{id}/edit', [CompanyController::class, 'edit'])->name('company.edit');
-     Route::post('/company/{id}', [CompanyController::class, 'update'])->name('company.update');
-     Route::delete('/company/{id}/delete', [CompanyController::class, 'destroy'])->name('company.destroy');
+     Route::get('/department', [DepartmentController::class, 'index'])->name('department.index');
+     Route::get('/department/create', [DepartmentController::class, 'create'])->name('department.create');
+     Route::post('/department', [DepartmentController::class, 'store'])->name('department.store');
+     Route::get('/department/{id}/edit', [DepartmentController::class, 'edit'])->name('department.edit');
+     Route::put('/department/{id}', [DepartmentController::class, 'update'])->name('department.update');
+     Route::delete('/department/{id}/delete', [DepartmentController::class, 'destroy'])->name('department.destroy');
+     Route::put('department/toggle-status/{id}', [DepartmentController::class, 'toggleStatus'])->name('department.toggleStatus');
 
      //Employees
      Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
      Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
      Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
      Route::get('/employees/{id}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-     Route::post('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
+     Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
      Route::delete('/employees/{id}/delete', [EmployeeController::class, 'destroy'])->name('employees.destroy');
+     Route::put('employees/toggle-status/{id}', [EmployeeController::class, 'toggleStatus'])->name('employees.toggleStatus');
+
+     Route::get('/employees/login', [EmployeeController::class, 'login'])->name('employees.login');
 });
 
 
