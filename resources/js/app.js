@@ -1,7 +1,23 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+const setup = () => {
+    const getTheme = () => {
+      if (window.localStorage.getItem('dark')) {
+        return JSON.parse(window.localStorage.getItem('dark'))
+      }
+      return !!window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    }
 
-window.Alpine = Alpine;
+    const setTheme = (value) => {
+      window.localStorage.setItem('dark', value)
+    }
 
-Alpine.start();
+    return {
+      loading: true,
+      isDark: getTheme(),
+      toggleTheme() {
+        this.isDark = !this.isDark
+        setTheme(this.isDark)
+      },
+    }
+  }

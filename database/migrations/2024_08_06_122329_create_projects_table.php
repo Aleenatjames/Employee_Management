@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('pm');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('description');
+            $table->string('status');
             $table->timestamps();
+            
+            $table->foreign('pm')->references('id')->on('employees')->onDelete('cascade');
         });
     }
 

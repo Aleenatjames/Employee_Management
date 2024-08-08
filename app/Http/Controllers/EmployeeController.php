@@ -141,4 +141,17 @@ class EmployeeController extends Controller
         public function login(){
             return view('employee.login');
         }
+
+        public function dashboard(){
+            return view('employee.dashboard');
+        }
+        public function logout(Request $request)
+    {
+        Auth::guard('employee')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('employee.login');
+    }
 }

@@ -69,7 +69,9 @@ class Kernel implements KernelContract
      *
      * @deprecated
      */
-    protected $routeMiddleware = [];
+    protected $routeMiddleware = [
+        'employee.auth' => \App\Http\Middleware\EnsureEmployeeIsAuthenticated::class,
+    ];
 
     /**
      * The application's middleware aliases.
