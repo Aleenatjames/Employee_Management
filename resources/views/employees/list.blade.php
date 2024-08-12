@@ -9,7 +9,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-">
+        <div class="max-w-10xl mx-auto sm:px-6 lg:px-">
             <x-message></x-message>
 
             <table class="w-full border-collapse">

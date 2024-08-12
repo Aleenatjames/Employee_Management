@@ -4,10 +4,14 @@ namespace App\Http\Controllers\employee;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class ProjectController extends Controller
 {
+    
     public function index(){
         return view('employee.projects.index');
     }

@@ -13,7 +13,7 @@ class RoleMiddleware
     {
         $authGuard = Auth::guard($guard);
 
-        $user = $authGuard->user();
+        $user = Auth::guard('employee')->user();
 
         // For machine-to-machine Passport clients
         if (! $user && $request->bearerToken() && config('permission.use_passport_client_credentials')) {

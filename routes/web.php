@@ -2,20 +2,20 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
-use App\Http\Controllers\employee\ProjectAllocation;
+
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\employee\ProjectController;
+
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+Route::get('/admin', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/admin/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -70,24 +70,5 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//Employee Portal
-Route::middleware('employee.redirect_if_authenticated')->group(function () {
-    Route::get('/employee/login', [EmployeeController::class, 'login'])->name('employee.login');
-});
-
-Route::middleware('employee.auth')->group(function () {
-    Route::get('/employee/dashboard', [EmployeeController::class, 'dashboard'])->name('employee.dashboard');
-    Route::post('/employee/logout', [EmployeeController::class, 'logout'])->name('employee.logout');
-
-
-    Route::get('/employee/projects/index', [ProjectController::class,'index'])->name('employee.projects.index');
-    Route::get('/employee/projects/create', [ProjectController::class,'create'])->name('employee.projects.create');
-    Route::get('/employee/projects/{project}/edit', [ProjectController::class,'edit'])->name('employee.projects.edit');
-
-    Route::get('/employee/project-allocations/index', [ProjectAllocation::class,'index'])->name('employee.project-allocations.index');
-    Route::get('/employee/project-allocations/create', [ProjectAllocation::class,'create'])->name('employee.project-allocations.create');
-    Route::get('/employee/project-allocations/edit/{allocation}', [ProjectAllocation::class,'edit'])->name('employee.project-allocations.edit');
-
-});
 
 require __DIR__.'/auth.php';

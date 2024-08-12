@@ -18,7 +18,6 @@
                         <th class="px-6 py-3 text-left">ID</th>
                         <th class="px-6 py-3 text-left">Name</th>
                         <th class="px-6 py-3 text-left">Email</th>
-                        <th class="px-6 py-3 text-left">Roles</th>
                         <th class="px-6 py-3 text-left" >Created</th>
                         <th class="px-6 py-3 text-center">Action</th>
                     </tr>
@@ -36,19 +35,17 @@
                         <td class="px-6 py-3 text-left">
                             {{$user->email}}
                         </td>
-                        <td class="px-6 py-3 text-left">
-                            {{$user->roles->pluck('name')->implode(', ')}}
-                        </td>
+                       
                         <td class="px-6 py-3 text-left">
                             {{\Carbon\Carbon::parse($user->created_at)->format('d,M,Y')}}
                         </td>
                         <td class="px-6 py-3 text-center">
-                            @can('edit users')
+                      
                         <a href="{{route('users.edit',$user->id)}}" class="bg-slate-700 rounded py-2 my-2 px-3 text-white hover:bg-slate-600">Edit</a>
-                        @endcan
-                        @can('delete users')
+                   
+                   
                         <a href="#"  onclick="deleteProduct('{{ $user->id }}');" class="bg-red-700 rounded py-2 my-2 px-3 text-white hover:bg-red-600">Delete</a>
-                        @endcan
+                    
                         <form id="delete-product-form-{{ $user->id }}" action="{{ route('users.destroy', $user->id) }}" method="post">
                                     @csrf
                                      @method('delete')

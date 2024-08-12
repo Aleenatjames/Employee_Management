@@ -4,9 +4,9 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Role') }}
         </h2>
-        @can('create roles')
+
         <a href="{{route('roles.create')}}" class="bg-slate-700 rounded py-2 my-2 px-3 text-white">Create</a>
-        @endcan
+      
         </div>
     </x-slot>
 
@@ -41,12 +41,11 @@
                             {{\Carbon\Carbon::parse($role->created_at)->format('d,M,Y')}}
                         </td>
                         <td class="px-6  py-3 text-left flex">
-                            @can('edit roles')
+                
                         <a href="{{route('roles.edit',$role->id)}}" class="bg-slate-700 rounded py-2 my-2 px-3 mr-1 text-white hover:bg-slate-600">Edit</a>
-                        @endcan
-                        @can('delete roles')
+                      
                         <a href="#"  onclick="deleteProduct('{{ $role->id }}');" class="bg-red-700 rounded py-2 my-2 px-3 text-white hover:bg-red-600">Delete</a>
-                        @endcan
+                        
                         <form id="delete-product-form-{{ $role->id }}" action="{{ route('roles.destroy', $role->id) }}" method="post">
                                     @csrf
                                      @method('delete')

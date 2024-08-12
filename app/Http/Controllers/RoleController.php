@@ -8,17 +8,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class RoleController extends Controller implements HasMiddleware
+class RoleController extends Controller
 {
-    public static function middleware():array
-    {
-        return[
-            new Middleware('permission:view roles',only: ['index']),
-            new Middleware('permission:edit roles',only: ['edit']),
-            new Middleware('permission:create roles',only: ['create']),
-            new Middleware('permission:delete roles',only: ['destroy']),
-        ];
-    }
     public function index(){
         $roles=Role::orderBy('created_at','DESC')->paginate(10);
         return view('roles.list',[
@@ -36,10 +27,13 @@ class RoleController extends Controller implements HasMiddleware
     public function store(Request $request){
         $validateData = $request->validate([
             'name' => 'required|unique:roles',
+            'guard_name' => 'employee'
         ]);
 
         if ($validateData) {
-            $role=Role::create(['name'=>$request->name]);
+            $role=Role::create(['name'=>$request->name,
+            'guard_name'=>'employee'
+        ]);
            if(!empty($request->permission)){
             foreach($request->permission as $name){
                 $role->givePermissionTo($name);

@@ -117,7 +117,12 @@ class EmployeeController extends Controller
     // Sync departments (assuming you have a many-to-many relationship)
     $employee->departments()->sync($request->input('departments', []));
 
-    $employee->syncRoles($request->input('role'));
+    // Ensure the role is associated with the correct guard
+    $role = Role::where('name', $request->input('role'))
+    ->where('guard_name', 'employee')
+    ->firstOrFail();
+
+$employee->syncRoles([$role]);
 
     return redirect()->route('employees.index')->with('success', 'Employee updated successfully');
 }

@@ -31,6 +31,7 @@
                 <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
               </a>
             </li>
+           
             <li class="relative group">
                 <a wire:navigate href="{{ route('employee.projects.index') }}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                     <span class="inline-flex justify-center items-center ml-4">
@@ -42,14 +43,24 @@
                     <span class="hidden md:block px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-500 bg-indigo-50 rounded-full">New</span>
                 </a>
                 <!-- Sub-menu -->
+       
                
             </li>
             <li>
+            
               <a wire:navigate href="{{route('employee.project-allocations.index')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
                 <span class="inline-flex justify-center items-center ml-4">
                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate">Project allocation</span>
+              </a>
+            </li>
+            <li>
+              <a wire:navigate href="{{route('employee.project-groups.index')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+                <span class="inline-flex justify-center items-center ml-4">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                </span>
+                <span class="ml-2 text-sm tracking-wide truncate">Project Groups</span>
               </a>
             </li>
             <li>
@@ -100,7 +111,7 @@
       <div class="fixed w-full flex items-center justify-between h-14 text-white z-10">
         <div class="flex items-center justify-start md:justify-center pl-3 w-14 md:w-64 h-14 bg-blue-800 dark:bg-gray-800 border-none">
           <img class="w-7 h-7 md:w-10 md:h-10 mr-2 rounded-md overflow-hidden" src="https://therminic2018.eu/wp-content/uploads/2018/07/dummy-avatar.jpg" />
-          <span class="hidden md:block">ADMIN</span>
+          <span class="hidden md:block">{{ Auth::guard('employee')->user()->name }}</span>
         </div>
         <div class="flex justify-between items-center h-14 bg-blue-800 dark:bg-gray-800 header-right">
           <div class="bg-white rounded flex items-center w-full max-w-xl mr-4 p- shadow-sm border border-gray-200">

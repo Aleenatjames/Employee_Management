@@ -9,17 +9,8 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class PermissionController extends Controller implements HasMiddleware
+class PermissionController extends Controller 
 {
-    public static function middleware():array
-    {
-        return[
-            new Middleware('permission:view permissions',only: ['index']),
-            new Middleware('permission:edit permissions',only: ['edit']),
-            new Middleware('permission:create permissions',only: ['create']),
-            new Middleware('permission:delete permissions',only: ['destroy']),
-        ];
-    }
    
     public function index(){
         $permissions=Permission::orderBy('created_at','DESC')->paginate(25);
@@ -35,10 +26,13 @@ class PermissionController extends Controller implements HasMiddleware
     public function store(Request $request){
         $validateData = $request->validate([
             'name' => 'required|unique:permissions',
+            'guard_name' => 'employee'
         ]);
 
         if ($validateData) {
-            Permission::create(['name'=>$request->name]);
+            Permission::create(['name'=>$request->name,
+            'guard_name'=>'employee'
+        ]);
             return redirect()->route('permissions.index')->with('success', 'Permission added successfully');
         } else {
             return redirect()->route('permissions.create')->withInput();

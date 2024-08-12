@@ -9,11 +9,12 @@ use Spatie\Permission\Guard;
 
 class PermissionMiddleware
 {
-    public function handle($request, Closure $next, $permission, $guard = null)
+    public function handle($request, Closure $next, $permission, $guard = 'employee')
     {
         $authGuard = Auth::guard($guard);
 
-        $user = $authGuard->user();
+        $user = Auth::guard('employee')->user();
+
 
         // For machine-to-machine Passport clients
         if (! $user && $request->bearerToken() && config('permission.use_passport_client_credentials')) {

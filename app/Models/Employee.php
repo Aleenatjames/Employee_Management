@@ -22,7 +22,7 @@ class Employee extends Authenticatable
         'designation'
 
     ];
-    protected $guard_name = 'web';
+    protected $guard_name = ['web', 'employee'];
     public function employeeDetails()
 {
     return $this->hasOne(EmployeeDetails::class, 'employee_id');
