@@ -14,4 +14,8 @@ class ProjectGroup extends Model
         'name',
         'isProject'
     ];
+    public function projects()
+    {
+        return $this->hasMany(Project::class, 'group_id');
+    }
 }

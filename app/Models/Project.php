@@ -16,6 +16,7 @@ class Project extends Model
         'end_date',
         'description',
         'status',
+        'group_id'
 
 
     ];
@@ -23,4 +24,16 @@ class Project extends Model
 {
     return $this->belongsTo(Employee::class, 'pm');
 }
+public function allocations()
+    {
+        return $this->hasMany(ProjectAllocation::class);
+    }
+    public function projectGroup()
+    {
+        return $this->belongsTo(ProjectGroup::class, 'id');
+    }
+    public function group()
+    {
+        return $this->belongsTo(ProjectGroup::class, 'group_id');
+    }
 }

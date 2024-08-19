@@ -11,22 +11,60 @@
                     </div>
                 @endif
 
-                <div class="flex items-center justify-between p-4">
-                    <div class="flex">
-                        <div class="relative w-full">
+                <div class="flex items-center justify-between p-4 flex-wrap gap-4">
+                    <!-- Left Section: Search and Filters -->
+                    <div class="flex space-x-3 items-center">
+                        <!-- Search Input -->
+                        <div class="relative w-48"> <!-- Adjusted width -->
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <svg aria-hidden="true" class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                 </svg>
                             </div>
-                            <input wire:model.live.debounce="search" type="text" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2" placeholder="Search">
+                            
+                            <input wire:model.live.debounce="search" type="text" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 py-1.5" placeholder="Search">
                         </div>
+
+                        <!-- Start Date Picker -->
+                        <div>
+                            start date
+                            <input type="date" wire:model.live="startDate" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5" placeholder="Start Date">
+                        </div>
+
+                        <!-- End Date Picker -->
+                        <div>
+                            end date
+                            <input type="date" wire:model.live="endDate" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5" placeholder="End Date">
+                        </div>
+
+                        <!-- Project Select Dropdown -->
+                        <div>
+                            Project
+                            <select wire:model.live="selectedProject" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5">
+                                <option value="">Select Project</option>
+                                @foreach($projects as $project)
+                                    <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Search Button -->
+                        <button wire:click="searchWithFilters" class="px-3 py-1.5 bg-blue-500 dark:bg-blue-600 text-white dark:text-gray-100 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700">
+                            <svg aria-hidden="true" class="w-4 h-4 inline-block" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
                     </div>
-                    <div class="flex space-x-3">
+
+                    <!-- Right Section: Create Button and Per Page Selector -->
+                    <div class="flex space-x-6 items-center"> <!-- Adjusted spacing -->
+                        <!-- Create Button -->
                         <a href="{{ route('employee.project-allocations.create') }}" class="px-4 py-2 bg-blue-500 dark:bg-blue-600 text-white dark:text-gray-100 rounded-lg hover:bg-blue-600 dark:hover:bg-blue-700">Create</a>
-                        <div class="flex space-x-3 items-center">
-                            <label class="w-40 text-sm font-medium text-gray-900 dark:text-gray-200">Per Page :</label>
-                            <select wire:model.live="perPage" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+
+                        <!-- Per Page Selector -->
+                        <div class="flex items-center space-x-2">
+                            <label class="text-sm font-medium text-gray-900 dark:text-gray-200">Per Page :</label>
+                            <select wire:model.live="perPage" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block py-1.5">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="20">20</option>
@@ -37,16 +75,17 @@
                     </div>
                 </div>
 
+
                 <div id="main" class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 dark:text-gray-100 uppercase bg-gray-50 dark:bg-gray-700">
                             <tr>
-                                <th wire:click="sortBy('project.name')" class="cursor-pointer px-4 py-2">Project</th>
-                                <th wire:click="sortBy('employee.name')" class="cursor-pointer px-4 py-2">Employee</th>
-                                <th wire:click="sortBy('role.name')" class="cursor-pointer px-4 py-2">Role</th>
+                                <th wire:click="sortBy('project_id')" class="cursor-pointer px-4 py-2">Project</th>
+                                <th wire:click="sortBy('employee_id')" class="cursor-pointer px-4 py-2">Employee</th>
+                                <th wire:click="sortBy('role_id')" class="cursor-pointer px-4 py-2">Role</th>
                                 <th wire:click="sortBy('start_date')" class="cursor-pointer px-4 py-2">Start Date</th>
                                 <th wire:click="sortBy('end_date')" class="cursor-pointer px-4 py-2">End Date</th>
-                                <th wire:click="sortBy('allocatedBy.name')" class="cursor-pointer px-4 py-2">Allocated By</th>
+                                <th wire:click="sortBy('allocated_by')" class="cursor-pointer px-4 py-2">Allocated By</th>
                                 <th scope="col" class="px-4 py-2">Actions</th>
                             </tr>
                         </thead>

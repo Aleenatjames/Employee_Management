@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\employee\HolidayController;
 use App\Http\Controllers\employee\ProjectController;
 use App\Http\Controllers\employee\ProjectAllocation;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\employee\ProjectGroups;
+use App\Http\Controllers\employee\TimesheetController;
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +44,15 @@ Route::middleware('employee.auth')->group(function () {
   
 
     //Timesheets
-    Route::get('/employee/time-entries', [ProjectGroups::class,'list'])->name('employee.time-entries');
+    Route::get('/employee/time-entries', [TimesheetController::class,'create'])->name('employee.time-entries');
+    Route::get('/employee/timesheet', [TimesheetController::class,'list'])->name('employee.timesheet');
+    Route::get('/employee/timesheet-edit/{timesheet}', [TimesheetController::class,'edit'])->name('employee.timesheet.edit');
+    Route::get('/export-timesheets', [TimesheetController::class, 'exportTimesheets'])->name('export.timesheets');
+
+
+    Route::get('/holiday', [HolidayController::class,'index'])->name('holiday.index');
+    Route::get('/holiday/create', [HolidayController::class,'create'])->name('holiday.create');
+    // In web.php
+    Route::get('holidays/edit/{holidayId}', [HolidayController::class,'edit'])->name('holiday.edit');
 
 });

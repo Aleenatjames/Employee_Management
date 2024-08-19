@@ -52,7 +52,7 @@ class Create extends Component
         ]);
 
         Session::flash('message', 'Project allocation created successfully.');
-        return redirect()->route('employee.project.allocations.index');
+        return redirect()->route('employee.project-allocations.index');
 
         // Reset fields after submission
         $this->reset();

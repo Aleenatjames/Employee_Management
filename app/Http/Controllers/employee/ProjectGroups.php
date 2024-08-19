@@ -17,7 +17,5 @@ class ProjectGroups extends Controller
  
         return view('employee.project-groups.edit',compact('groupId'));
     }
-    public function list(){
-        return view('employee.timesheet.timeshee-entries');
-    }
+   
 }

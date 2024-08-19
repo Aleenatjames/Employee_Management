@@ -39,6 +39,10 @@ public function company()
     {
         return $this->belongsToMany(Department::class, 'employee_department');
     }
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'employee_project', 'employee_id', 'project_id');
+    }
 
     
 }
