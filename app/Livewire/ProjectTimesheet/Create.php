@@ -7,13 +7,13 @@ use App\Models\ProjectGroup;
 use App\Models\ProjectTimesheet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class Create extends Component
 {
     public $project_id;
     public $date;
-    public $time;
     public $time_hours;
     public $time_minutes;
     public $time_seconds;
@@ -36,8 +36,8 @@ class Create extends Component
         })->get();
 
         $projectGroups = ProjectGroup::where('isProject', 0)
-        ->with('projects') // Eager load the projects
-        ->get();
+            ->with('projects') // Eager load the projects
+            ->get();
 
         return view('livewire.project-timesheet.create', [
             'projects' => $projects,
@@ -62,50 +62,69 @@ class Create extends Component
         'comment' => 'nullable|string',
         'taskid' => 'required_if:is_taskid,1',
     ];
+
+    protected $messages = [
+        'date.unique' => 'A timesheet for this date has already been submitted.',
+    ];
     
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
-    
+
     public function submitTimesheet()
-{
-    $this->validate();
+    {
+        // Additional validation rule for unique date for the current employee
+        $this->validate([
+            'date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
+                Rule::unique('project_timesheet')->where(function ($query) {
+                    return $query->where('employee_id', Auth::guard('employee')->id());
+                }),
+            ],
+            'project_id' => 'required',
+            'time_hours' => 'nullable|integer|min:0',
+            'time_minutes' => 'nullable|integer|min:0|max:59',
+            'time_seconds' => 'nullable|integer|min:0|max:59',
+            'comment' => 'nullable|string',
+            'taskid' => 'required_if:is_taskid,1',
+        ], $this->messages);
 
-    // Extract project ID if it's a group-related project
-    if (strpos($this->project_id, 'group-') !== false) {
-        $projectId = str_replace('group-', '', $this->project_id);
-    } else {
-        $projectId = $this->project_id;
+        // Extract project ID if it's a group-related project
+        if (strpos($this->project_id, 'group-') !== false) {
+            $projectId = str_replace('group-', '', $this->project_id);
+        } else {
+            $projectId = $this->project_id;
+        }
+
+        $project = Project::find($projectId);
+
+        if (!$project) {
+            session()->flash('message', 'Invalid project ID.');
+            return;
+        }
+
+        // Additional checks for project groups (if needed)
+        if ($project->group && $project->group->isProject == 0) {
+            // Your custom logic for handling project groups
+        }
+
+        // Proceed with saving the timesheet data
+        ProjectTimesheet::create([
+            'employee_id' => Auth::guard('employee')->id(),
+            'project_id' => $projectId,
+            'date' => $this->date,
+            'time' => sprintf('%02d:%02d:%02d', $this->time_hours, $this->time_minutes, $this->time_seconds),
+            'is_taskid' => $this->is_taskid,
+            'taskid' => $this->taskid,
+            'comment' => $this->comment,
+        ]);
+
+        session()->flash('message', 'Timesheet submitted successfully.');
+        return redirect()->route('employee.timesheet');
     }
-
-    $project = Project::find($projectId);
-
-    if (!$project) {
-        session()->flash('message', 'Invalid project ID.');
-        return;
-    }
-
-    // Additional checks for project groups (if needed)
-    if ($project->group && $project->group->isProject == 0) {
-        // Your custom logic for handling project groups
-    }
-
-    // Proceed with saving the timesheet data
-    ProjectTimesheet::create([
-        'employee_id' => Auth::guard('employee')->id(),
-        'project_id' => $projectId,
-        'date' => $this->date,
-        'time' => sprintf('%02d:%02d:%02d', $this->time_hours, $this->time_minutes, $this->time_seconds),
-        'is_taskid' => $this->is_taskid,
-        'taskid' => $this->taskid,
-        'comment' => $this->comment,
-    ]);
-
-    session()->flash('message', 'Timesheet submitted successfully.');
-    return redirect()->route('employee.timesheet');
-}
-
 
     public function resetForm()
     {

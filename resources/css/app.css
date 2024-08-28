@@ -120,6 +120,22 @@
 .project-item:hover .project-submenu {
   display: block;
 }
+.attendance-visualization {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+#attendanceCanvas {
+  border: 1px solid #ddd;
+ 
+}
+.bg-split {
+  background: linear-gradient(to right, rgb(226, 51, 51) 50%, rgb(10, 184, 10) 50%);
+
+}
+
 @media only screen and (min-width: 768px) {
     .header-right {
         width: calc(100% - 16rem);

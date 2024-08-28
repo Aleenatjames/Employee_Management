@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\employee\AttendanceController;
 use App\Http\Controllers\employee\HolidayController;
 use App\Http\Controllers\employee\ProjectController;
 use App\Http\Controllers\employee\ProjectAllocation;
@@ -54,5 +55,13 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/holiday/create', [HolidayController::class,'create'])->name('holiday.create');
     // In web.php
     Route::get('holidays/edit/{holidayId}', [HolidayController::class,'edit'])->name('holiday.edit');
+
+    Route::get('/employee-report', [TimesheetController::class,'index'])->name('employee-report.index');
+
+    Route::get('/employee/attendance/table', [AttendanceController::class,'index'])->name('employee.attendance');
+    Route::post('/toggle-check-in-status', [AttendanceController::class, 'toggleCheckInStatus']);
+    Route::get('/get-check-in-status', [AttendanceController::class, 'getCheckInStatus']);
+
+    Route::get('/employee/attendance/view', [AttendanceController::class,'line'])->name('employee.attendance.line');
 
 });

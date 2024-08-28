@@ -16,6 +16,7 @@ class EmployeeController extends Controller
 {
     public function index(){
         $employees = Employee::with('departments', 'roles')->paginate(10);
+        
         return view('employees.list',[
             'employees'=>$employees ,
            
@@ -26,7 +27,8 @@ class EmployeeController extends Controller
     {
         $departments = Department::all();
         $roles = Role::all();
-        return view('employees.create', compact('departments','roles'));
+        $employees = Employee::whereNull('reporting_manager')->get();
+        return view('employees.create', compact('departments','roles','employees'));
     }
 
     public function store(Request $request)
@@ -37,6 +39,7 @@ class EmployeeController extends Controller
             'email' => 'required|email|unique:employees,email',
             'password' => 'required|string|min:8',
             'designation' => 'nullable|string|max:255',
+            'rm' => 'nullable|string|max:255',
             'departments' => 'nullable|array',
             'role' => 'required'
         ]);
@@ -50,6 +53,7 @@ class EmployeeController extends Controller
             $employee->email = $data['email'];
             $employee->password = bcrypt($data['password']); // Hash the password
             $employee->designation = $data['designation'];
+            $employee->reporting_manager = $data['rm'];
             $employee->status = 'active';
             $employee->save(); // Save employee to get the ID
     
@@ -78,6 +82,7 @@ class EmployeeController extends Controller
 {
     // Fetch the employee by ID or fail if not found
     $employee = Employee::findOrFail($id);
+    $employees = Employee::whereNull('reporting_manager')->get();
 
     // Fetch all departments for the dropdown list
     $departments = Department::all();
@@ -87,7 +92,8 @@ class EmployeeController extends Controller
     return view('employees.edit', [
         'employee' => $employee,
         'departments' => $departments,
-        'roles'=>$roles
+        'roles'=>$roles,
+        'employees'=>$employees
     ]);
 }
 
@@ -100,6 +106,7 @@ class EmployeeController extends Controller
         'email' => 'required|email|unique:employees,email,' . $id,
         'password' => 'nullable|min:8',
         'designation' => 'required',
+        'rm' => 'required',
         'departments' => 'array|exists:departments,id',
         'role' => 'required|string'
     ]);
@@ -112,6 +119,7 @@ class EmployeeController extends Controller
     }
 
     $employee->designation = $request->input('designation');
+    $employee->reporting_manager = $request->input('rm');
     $employee->save();
 
     // Sync departments (assuming you have a many-to-many relationship)

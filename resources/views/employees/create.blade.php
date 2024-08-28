@@ -58,6 +58,22 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-span-1">
+                                <label for="name" class="text-lg font-medium">Reporting Manager</label>
+                                <div class="mt-2">
+                                <select id="rn" name="rm" class="w-full border-gray-300 shadow-sm rounded-lg">
+                                        <option value="">Reporting manager</option>
+                                        @foreach($employees as $employee)
+                                            <option value="{{ $employee->id }}" {{ old('rm') == $employee->id ? 'selected' : '' }}>
+                                                {{ $employee->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('rm')
+                                    <p class="invalid-feedback text-red-400">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
 
                             <!-- Departments Checkboxes -->
                             <div class="col-span-2">

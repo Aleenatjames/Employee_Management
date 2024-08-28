@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Project;
 use App\Models\ProjectAllocation;
 use App\Models\ProjectRole;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -14,7 +15,6 @@ class Create extends Component
     public $project_id;
     public $employee_id;
     public $role_id;
-    public $allocated_by;
     public $start_date;
     public $end_date;
 
@@ -26,7 +26,6 @@ class Create extends Component
         'project_id' => 'required|exists:projects,id',
         'employee_id' => 'required|exists:employees,id',
         'role_id' => 'required|exists:project_roles,id',
-        'allocated_by' => 'required|exists:employees,id',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
     ];
@@ -46,7 +45,7 @@ class Create extends Component
             'project_id' => $this->project_id,
             'employee_id' => $this->employee_id,
             'role_id' => $this->role_id,
-            'allocated_by' => $this->allocated_by,
+            'allocated_by' => Auth::guard('employee')->id(),
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
         ]);

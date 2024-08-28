@@ -52,18 +52,6 @@
                         </select>
                         @error('role_id') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
-
-                    <div class="mb-4">
-                        <label for="allocated_by" class="block text-gray-700 dark:text-gray-100">Allocated By</label>
-                        <select id="allocated_by" wire:model="allocated_by" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
-                            <option value="">Select Allocator</option>
-                            @foreach($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('allocated_by') <span class="text-red-500">{{ $message }}</span> @enderror
-                    </div>
-
                     <div class="mb-4">
                         <label for="start_date" class="block text-gray-700 dark:text-gray-100">Start Date</label>
                         <input type="date" id="start_date" wire:model="start_date" class="mt-1 block w-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-100" />

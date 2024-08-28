@@ -20,6 +20,7 @@
                         <th class="px-6 py-3 text-left">Email</th>
                         <th class="px-6 py-3 text-left">Designation</th>
                         <th class="px-6 py-3 text-left">Departments</th>
+                        <th class="px-6 py-3 text-left">Reporting Manager</th>
                         <th class="px-6 py-3 text-left">Role</th> <!-- Add Role column -->
                         <th class="px-6 py-3 text-left">Status</th>
                         <th class="px-6 py-3 text-left">Created</th>
@@ -37,6 +38,9 @@
                                 @foreach($employee->departments as $department)
                                     {{ $department->name }}{{ !$loop->last ? ', ' : '' }}
                                 @endforeach
+                            </td>
+                            <td class="px-6 py-3 text-left">
+                                {{$employee->reporting_manager}}
                             </td>
                             <td class="px-6 py-3 text-left"> <!-- Role column -->
                                 @foreach($employee->roles as $role)

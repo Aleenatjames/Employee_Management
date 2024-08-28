@@ -17,12 +17,12 @@ class Employee extends Authenticatable
         'name',
         'email',
         'password',
-        
+        'reporting_manager',
         'status',
         'designation'
 
     ];
-    protected $guard_name = ['web', 'employee'];
+    protected $guard_name = ['employee'];
     public function employeeDetails()
 {
     return $this->hasOne(EmployeeDetails::class, 'employee_id');
@@ -44,5 +44,12 @@ public function company()
         return $this->belongsToMany(Project::class, 'employee_project', 'employee_id', 'project_id');
     }
 
-    
+    public function timesheets()
+    {
+        return $this->hasMany(ProjectTimesheet::class);
+    }
+    public function reportingManager()
+    {
+        return $this->belongsTo(Employee::class, 'reporting_manager');
+    }
 }
