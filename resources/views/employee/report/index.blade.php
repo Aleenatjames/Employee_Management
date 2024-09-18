@@ -1,6 +1,6 @@
 @extends('layouts.employee_dashboard')
 
-@section('title', 'Project-Group-Create')
+@section('title', 'Employee Report')
 
 @section('sidebar')
     @parent

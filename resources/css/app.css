@@ -134,6 +134,91 @@
 .bg-split {
   background: linear-gradient(to right, rgb(226, 51, 51) 50%, rgb(10, 184, 10) 50%);
 
+}.Cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for the 7 days of the week */
+ 
+  padding: 10px;
+}
+
+.Cal-day-header, .Cal-day-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  
+  font-weight: 600;
+}
+
+.Cal-day-header {
+  background-color: #f3f4f6; /* Light background for day headers */
+}
+
+.Cal-day-current-month {
+  background-color: #e5e7eb; /* Light gray for current month days */
+}
+
+.Cal-day-cell {
+  position: relative;
+  padding: 5px;
+  min-height: 150px; /* Added minimum height */
+  background-color: #ffffff; /* Ensures background is white */
+}
+
+.day-number {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  font-size: 1.125rem;
+  font-weight: normal;
+}
+
+.Cal-tag {
+  margin-top: 5px;
+  padding: 2px 6px;
+  align-items: center;
+  border-width: 0 0 0 5px;
+  border-style: solid;
+  border-radius: 2px;
+  font-size: 0.875rem;
+  text-align: center;
+  width: 200px;
+  height: 30px;
+  color: black; /* Ensure text color is black */
+  font-weight: normal; /* Remove bold font */
+  
+}
+
+.Cal-tag-blue {
+  background-color: #e3f3ff; /* Blue */
+  border-left-color: #7191c2; /* Darker blue border */
+}
+
+.Cal-tag-red {
+  background-color: rgba(240, 152, 154, 0.1); /* Red */
+  border-left-color: #bd6262; /* Darker red border */
+}
+
+.Cal-tag-green {
+  background-color: rgba(178, 215, 173, 0.2); /* Green */
+  border-left-color: #61b47a; /* Darker green border */
+}
+
+.empty-cell {
+  background-color: #f9f9f9;
+  min-height: 150px; /* Ensure empty cells have the same height */
+}
+.time-slot {
+  flex-grow: 1;
+  text-align: center;
+}
+@keyframes grow-line {
+  from {
+      width: 0%;
+  }
+  to {
+      width: 100%;
+  }
 }
 
 @media only screen and (min-width: 768px) {

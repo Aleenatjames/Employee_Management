@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     use HasFactory;
+    
     protected $table = 'attendance';
     protected $fillable = [
         'employee_id',
@@ -18,4 +19,9 @@ class Attendance extends Model
     {
         return $this->hasMany(AttendanceEntry::class);
     }
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id');
+    }
+    
 }

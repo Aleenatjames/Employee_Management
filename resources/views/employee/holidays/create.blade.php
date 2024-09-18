@@ -1,6 +1,6 @@
 @extends('layouts.employee_dashboard')
 
-@section('title', 'Project-Allocation-Create')
+@section('title', 'Holiday Create')
 
 @section('sidebar')
     @parent

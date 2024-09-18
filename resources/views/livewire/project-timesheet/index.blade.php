@@ -49,7 +49,7 @@
                                 <input wire:model.live.debounce="search" type="text" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-9 py-1.5" placeholder="Search">
                             </div>
 
-                            <!-- Start Date Picker -->
+                              <!-- Start Date Picker -->
                           
                             <div class="mb-4">
                                 <label for="employee-select" class="block text-sm font-medium text-gray-700 dark:text-gray-400">From Date</label>

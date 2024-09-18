@@ -1,6 +1,6 @@
 @extends('layouts.employee_dashboard')
 
-@section('title', 'Holiday Edit')
+@section('title', 'Attendance Edit')
 
 @section('sidebar')
     @parent
@@ -12,7 +12,7 @@
        
 <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
     
- @livewire('holiday.edit',['holidayId' => $holidayId])
+ @livewire('attendance.edit')
 </div> 
 
 

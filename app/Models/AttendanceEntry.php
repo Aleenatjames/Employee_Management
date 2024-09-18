@@ -21,4 +21,8 @@ class AttendanceEntry extends Model
     {
         return $this->belongsTo(Attendance::class);
     }
+    public function modifiedBy()
+    {
+        return $this->belongsTo(Employee::class, 'modified_by');
+    }
 }

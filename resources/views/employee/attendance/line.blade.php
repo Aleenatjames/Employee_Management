@@ -1,6 +1,6 @@
 @extends('layouts.employee_dashboard')
 
-@section('title', 'Project-Create')
+@section('title', 'Attendance-View')
 
 @section('sidebar')
 @parent
@@ -10,20 +10,20 @@
 
 @section('content')
 
-<div class="h-full ml-14 mt-14 mb-10 md:ml-64">
-
-    <div class="h-full ml-14 mt-14 mb-10 md:ml-64">
-        <section class="mt-10">
-            <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-                <div class="mt-20 bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                    @include('elements.check-button')
-                    <!-- Success Message -->
-                    @if (session()->has('message'))
-                    <div class="bg-green-500 text-white p-4 rounded shadow-md mb-6">
-                        {{ session('message') }}
-                    </div>
-                    @endif
-
+<div class="h-full mt- mb- md:ml-72">
+    <section class="mt-10 mx- ">
+       
+            <div class="mt-20 w-full">
+                @include('elements.check-button')
+                <!-- Success Message -->
+                @if (session()->has('error'))
+                <div class="bg-green-500 text-white p-4 rounded shadow-md mb-6">
+                    {{ session('error') }}
+                </div>
+                @endif
+                @livewireScripts
+                 @livewire('attendance.line')
 
 
                     @endsection
+                    

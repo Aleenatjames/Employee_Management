@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\employee\ProjectGroups;
 use App\Http\Controllers\employee\TimesheetController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\LeaveController;
 use Illuminate\Support\Facades\Route;
 
 //Employee Portal
@@ -49,8 +50,7 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/employee/timesheet', [TimesheetController::class,'list'])->name('employee.timesheet');
     Route::get('/employee/timesheet-edit/{timesheet}', [TimesheetController::class,'edit'])->name('employee.timesheet.edit');
     Route::get('/export-timesheets', [TimesheetController::class, 'exportTimesheets'])->name('export.timesheets');
-
-
+    
     Route::get('/holiday', [HolidayController::class,'index'])->name('holiday.index');
     Route::get('/holiday/create', [HolidayController::class,'create'])->name('holiday.create');
     // In web.php
@@ -59,9 +59,13 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/employee-report', [TimesheetController::class,'index'])->name('employee-report.index');
 
     Route::get('/employee/attendance/table', [AttendanceController::class,'index'])->name('employee.attendance');
+    Route::get('/employee/attendance/table/audit-history', [AttendanceController::class, 'history'])->name('employee.attendance.history');
     Route::post('/toggle-check-in-status', [AttendanceController::class, 'toggleCheckInStatus']);
-    Route::get('/get-check-in-status', [AttendanceController::class, 'getCheckInStatus']);
 
+    Route::post('/employee/attendance/table/update/{attendanceId}', [AttendanceController::class, 'update'])->name('employee.attendance.update');
+  
     Route::get('/employee/attendance/view', [AttendanceController::class,'line'])->name('employee.attendance.line');
+    Route::get('/employee/attendance/calendar', [AttendanceController::class,'calendar'])->name('employee.attendance.calendar');
 
+    Route::get('/employee/leave/view', [LeaveController::class,'list'])->name('employee.leave');
 });

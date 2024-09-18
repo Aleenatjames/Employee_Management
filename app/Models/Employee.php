@@ -52,4 +52,8 @@ public function company()
     {
         return $this->belongsTo(Employee::class, 'reporting_manager');
     }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'employee_id');
+    }
 }
