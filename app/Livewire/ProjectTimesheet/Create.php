@@ -55,7 +55,7 @@ class Create extends Component
 
     protected $rules = [
         'project_id' => 'required',
-        'date' => 'required|date|before_or_equal:today',
+        'date' => 'required|date',
         'time_hours' => 'nullable|integer|min:0',
         'time_minutes' => 'nullable|integer|min:0|max:59',
         'time_seconds' => 'nullable|integer|min:0|max:59',
@@ -63,9 +63,7 @@ class Create extends Component
         'taskid' => 'required_if:is_taskid,1',
     ];
 
-    protected $messages = [
-        'date.unique' => 'A timesheet for this date has already been submitted.',
-    ];
+    
     
     public function updated($propertyName)
     {
@@ -74,15 +72,10 @@ class Create extends Component
 
     public function submitTimesheet()
     {
-        // Additional validation rule for unique date for the current employee
         $this->validate([
             'date' => [
                 'required',
                 'date',
-                'before_or_equal:today',
-                Rule::unique('project_timesheet')->where(function ($query) {
-                    return $query->where('employee_id', Auth::guard('employee')->id());
-                }),
             ],
             'project_id' => 'required',
             'time_hours' => 'nullable|integer|min:0',
@@ -90,8 +83,9 @@ class Create extends Component
             'time_seconds' => 'nullable|integer|min:0|max:59',
             'comment' => 'nullable|string',
             'taskid' => 'required_if:is_taskid,1',
-        ], $this->messages);
-
+        ]);
+        
+        
         // Extract project ID if it's a group-related project
         if (strpos($this->project_id, 'group-') !== false) {
             $projectId = str_replace('group-', '', $this->project_id);

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\employee\AttendanceController;
 use App\Http\Controllers\employee\HolidayController;
+use App\Http\Controllers\employee\ProfileController;
 use App\Http\Controllers\employee\ProjectController;
 use App\Http\Controllers\employee\ProjectAllocation;
 use App\Http\Controllers\EmployeeController;
@@ -68,4 +69,7 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/employee/attendance/calendar', [AttendanceController::class,'calendar'])->name('employee.attendance.calendar');
 
     Route::get('/employee/leave/view', [LeaveController::class,'list'])->name('employee.leave');
+
+    Route::get('/employee/profile/view',[ProfileController::class,'view'])->name('employee.profile');
+
 });

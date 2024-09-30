@@ -17,7 +17,7 @@
     let timerInterval = null;
     let totalSeconds = 0;
     let lastCheckInDate = null;
-    const employeeId = '{{ Auth::guard('employee')->user()->id }}'; // Get employee ID dynamically
+    const employeeId = "{{ Auth::guard('employee')->user()->id }}"; // Get employee ID dynamically
 
     // Load state from local storage on page load
     $(document).ready(function() {

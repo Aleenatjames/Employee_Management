@@ -172,7 +172,41 @@
   font-size: 1.125rem;
   font-weight: normal;
 }
+ /* Animation for the moving green line */
+ @keyframes moveLine {
+  from {
+      width: 0;
+  }
+  to {
+      width: 100%;
+  }
+}
 
+/* Style for the moving green line */
+.moving-progress {
+  background-color: green;
+  height: 3px;
+  position: absolute;
+  top: -1px;
+  animation: moveLine 5s linear infinite; /* Adjust timing as necessary */
+}
+
+/* Style for the gray background line */
+.progress-line {
+  width: 500px;
+  height: 1px;
+  background-color: gray;
+  position: relative;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+}
 .Cal-tag {
   margin-top: 5px;
   padding: 2px 6px;
@@ -212,6 +246,7 @@
   flex-grow: 1;
   text-align: center;
 }
+
 @keyframes grow-line {
   from {
       width: 0%;

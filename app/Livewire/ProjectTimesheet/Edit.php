@@ -26,7 +26,7 @@ class Edit extends Component
         'time_minutes' => 'nullable|integer|min:0|max:59',
         'time_seconds' => 'nullable|integer|min:0|max:59',
         'taskid'=>'required_if:is_taskid,1',
-        'comment' => 'nullable|string|max:255',
+        'comment' => 'nullable|string',
     ];
 
     // Mounting the existing timesheet data

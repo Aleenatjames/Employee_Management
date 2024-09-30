@@ -7,13 +7,14 @@ use App\Models\AttendanceEntry;
 use App\Models\Employee;
 use App\Models\Holiday;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Line extends Component
 {
     public $weekOffset = 0;
     public $monthOffset = 0;
-    public $viewMode = 'weekly'; // Default view mode
+    public $viewMode = 'weekly'; 
     public $attendanceData = [];
     public $selectedEmployee = null;
     public $reportingEmployees = [];
@@ -42,8 +43,8 @@ class Line extends Component
     public function setViewMode($mode)
     {
         $this->viewMode = $mode;
-        $this->weekOffset = 0; // Reset week offset when changing view mode
-        $this->monthOffset = 0; // Reset month offset when changing view mode
+        $this->weekOffset = 0;
+        $this->monthOffset = 0; 
         $this->loadAttendanceData();
     }
 
@@ -76,17 +77,16 @@ class Line extends Component
     public function loadAttendanceData()
     {
         $employee = Employee::find($this->selectedEmployee);
-    
+
         if (!$employee) {
             // Handle case where employee is not found
             $this->attendanceData = [];
             return;
         }
-    
+
         $employeeId = $employee->id;
-        $employeeCreationDate = Carbon::parse($employee->created_at)->format('Y-m-d'); // Format the employee creation date
-        $today = Carbon::now()->format('Y-m-d'); // Get today's date
-    
+        $employeeCreationDate = Carbon::parse($employee->created_at)->format('Y-m-d');
+        $today = Carbon::now()->format('Y-m-d'); 
         if ($this->viewMode === 'weekly') {
             // Start the week on Sunday and end on Saturday
             $startOfPeriod = Carbon::now()->startOfWeek(Carbon::SUNDAY)->addWeeks($this->weekOffset)->format('Y-m-d');
@@ -95,22 +95,22 @@ class Line extends Component
             $startOfPeriod = Carbon::now()->startOfMonth()->addMonths($this->monthOffset)->format('Y-m-d');
             $endOfPeriod = Carbon::now()->endOfMonth()->addMonths($this->monthOffset)->format('Y-m-d');
         }
-    
+
         // Ensure the start of the period is not before the employee creation date
         if ($startOfPeriod < $employeeCreationDate) {
-            $startOfPeriod = $employeeCreationDate; // Adjust to the employee's creation date if necessary
+            $startOfPeriod = $employeeCreationDate; 
         }
-    
-       
+
+
         // Generate period dates
         $periodDates = collect();
         for ($date = Carbon::parse($startOfPeriod); $date->lte($endOfPeriod); $date->addDay()) {
             $periodDates->push($date->format('Y-m-d'));
         }
-    
+
         // Fetch reporting employees
         $reportingEmployees = Employee::where('reporting_manager', $employeeId)->pluck('id')->toArray();
-    
+
         if ($this->selectedEmployee == 'all') {
             $this->attendanceData = Attendance::all();
         } elseif ($this->selectedEmployee) {
@@ -118,14 +118,14 @@ class Line extends Component
         } else {
             $this->attendanceData = [];
         }
-    
+
         // Fetch holidays and attendances
         $holidays = Holiday::whereBetween('date', [$startOfPeriod, $endOfPeriod])->get();
         $attendances = Attendance::where('employee_id', $employeeId)
             ->whereBetween('date', [$startOfPeriod, $endOfPeriod])
             ->with('attendanceEntries')
             ->get();
-    
+
         // Initialize total counters
         $totalSeconds = 0;
         $totalPayableSeconds = 0;
@@ -133,74 +133,106 @@ class Line extends Component
         $totalWeekendSeconds = 0;
         $totalPresentSeconds = 0;
         $totalAbsentSeconds = 0;
-    
+
         $this->attendanceData = $periodDates->map(function ($date) use ($attendances, $holidays, $employeeCreationDate, &$totalSeconds, &$totalPayableSeconds, &$totalHolidaySeconds, &$totalWeekendSeconds, &$totalPresentSeconds, &$totalAbsentSeconds) {
             $attendance = $attendances->firstWhere('date', $date);
             $attendanceId = $attendance ? $attendance->id : null;
-        
+
             $firstInEntry = $attendance ? $attendance->attendanceEntries->firstWhere('entry_type', 1) : null;
             $lastOutEntry = $attendance ? $attendance->attendanceEntries->where('entry_type', 0)->sortByDesc('entry_time')->first() : null;
-        
+
             $firstInTime = $firstInEntry ? Carbon::parse($attendance->date . ' ' . $firstInEntry->entry_time) : null;
             $lastOutTime = $lastOutEntry ? Carbon::parse($attendance->date . ' ' . $lastOutEntry->entry_time) : null;
-        
+
             $daySeconds = $attendance ? $attendance->attendanceEntries->sum('duration') : 0;
             $dayHours = $daySeconds > 0 ? gmdate('H:i', $daySeconds) : '-';
-    
+
             // Update total hours in seconds
             $totalSeconds += $daySeconds;
-        
+
             $attendanceEntries = AttendanceEntry::where('attendance_id', $attendanceId)
                 ->orderBy('entry_time')
                 ->get();
-        
+
             $checkInTimes = [];
             $checkOutTimes = [];
-        
+
             $forenoonSeconds = 0;
             $afternoonSeconds = 0;
-        
+
             $forenoonHours = gmdate('H:i', $forenoonSeconds);
             $afternoonHours = gmdate('H:i', $afternoonSeconds);
-        
+
             $dayName = Carbon::parse($date)->format('l');
             $isWeekend = in_array($dayName, ['Saturday', 'Sunday']);
-        
-            $status = 'aa'; // Default to Absent
-        
+
+            $status = 'aa'; 
+
             // Calculate attendance forenoon and afternoon (4-hour split logic)
             $forenoonSeconds = $attendance ? $attendance->attendanceEntries->where('entry_type', 1)->sum('duration') : 0;
             $afternoonSeconds = $attendance ? $attendance->attendanceEntries->where('entry_type', 0)->sum('duration') : 0;
-        
-          // Get today's date
-$today = Carbon::today();
+            // Get today's date
+            $today = Carbon::today();
+            $holidayss = ['2024-09-16', '2024-12-25']; 
 
-if ($attendance) {
-    // Check if the attendance date is today
-    if ($attendance->date == $today) {
-        // Save status as 'na' for today's date
-        $status = 'na';
-    } else {
-        // Automatic status calculation for other dates
-        if ($daySeconds >= 8 * 3600) {
-            $status = 'pp'; // Present
-        } else {
-            if ($forenoonSeconds >= 4 * 3600 && $afternoonSeconds >= 4 * 3600) {
-                $status = 'pp'; // Present
-            } elseif ($forenoonSeconds >= 4 * 3600 && $afternoonSeconds < 4 * 3600) {
-                $status = 'pa'; // Partial (Present/Absent)
-            } elseif ($forenoonSeconds < 4 * 3600 && $afternoonSeconds >= 4 * 3600) {
-                $status = 'ap'; // Absent (Present)
-            } elseif ($forenoonSeconds < 4 * 3600 && $afternoonSeconds < 4 * 3600) {
-                $status = 'aa'; // Absent (All Day)
+            // Convert the current date in the loop to a Carbon instance
+            $currentDate = Carbon::parse($date);
+
+            // Only process past dates (ignore today and future dates)
+            if ($currentDate->lt($today)) {
+                if ($attendance) {
+                    // Initialize the status variable
+                    $status = null;
+
+
+                    // Check if the date is a weekend or a holiday
+                    $isWeekend = $currentDate->isWeekend();
+
+                    $holiday = $holidays->firstWhere('date', $date);
+                    // If the attendance date is a weekday and not a holiday
+                    if (!$isWeekend && !$holiday) {
+                        // If there's no status for the attendance date, consider it a full day absent
+                        if (!$attendance->status) {
+                            $status = 'aa';
+                            $totalAbsentSeconds += 8 * 3600;
+                            Log::info('Date: ' . $currentDate->toDateString() . ' - Absent Hours: 8');
+                        }
+                    }
+
+                    // Automatic status calculation for other dates
+                    if ($daySeconds >= 8 * 3600) {
+                        $status = 'pp'; 
+                    } else {
+                        if ($forenoonSeconds >= 4 * 3600 && $afternoonSeconds >= 4 * 3600) {
+                            $status = 'pp'; 
+                        } elseif ($forenoonSeconds >= 4 * 3600 && $afternoonSeconds < 4 * 3600) {
+                            $status = 'pa';
+                            $totalAbsentSeconds += 4 * 3600;
+                            Log::info('Date: ' . $currentDate->toDateString() . ' - Absent Hours: 4 (Afternoon)');
+                        } elseif ($forenoonSeconds < 4 * 3600 && $afternoonSeconds >= 4 * 3600) {
+                            $status = 'ap';
+                            $totalAbsentSeconds += 4 * 3600;
+                            Log::info('Date: ' . $currentDate->toDateString() . ' - Absent Hours: 4 (Morning)');
+                        } else {
+                            $status = 'aa';
+                            $totalAbsentSeconds += 8 * 3600;
+                            Log::info('Date: ' . $currentDate->toDateString() . ' - Full Day Absent');
+                        }
+                    }
+
+                    // Save the attendance status
+                    $attendance->status = $status;
+                    $attendance->save();
+                } else if (!$isWeekend) {
+                    // If there's no attendance and it's a weekday, mark as absent
+                    $totalAbsentSeconds += 8 * 3600;
+                    Log::info('No attendance entry for date: ' . $currentDate->toDateString() . ' - Adding 8 hours');
+                }
             }
-        }
-    }
 
-    // Save the final status to the database
-    $attendance->status = $status;
-    $attendance->save();
-}
+
+
+
             foreach ($attendanceEntries as $entry) {
                 if ($entry->entry_type == 1) {
                     $checkInTimes[] = $entry->entry_time;
@@ -208,41 +240,41 @@ if ($attendance) {
                     $checkOutTimes[] = $entry->entry_time;
                 }
             }
-        
+
             // Check if the date is a holiday
             $holiday = $holidays->firstWhere('date', $date);
             if ($holiday) {
                 $status = $holiday->type === 'restricted' ? 'Restricted Holiday' : 'Public Holiday';
-                $payableHours = '08:00'; // Set payable hours to '8:00' on holidays
+                $payableHours = '08:00';
                 $holidaySeconds = 8 * 3600;
                 $totalHolidaySeconds += $holidaySeconds;
             } else {
                 if ($isWeekend) {
-                    $payableHours = '08:00'; // Full workday on weekends
+                    $payableHours = '08:00';
                 } else {
-                    if ($daySeconds >= 14400) { // 4 hours or more
-                        $payableHours = $daySeconds >= 28800 ? '08:00' : '04:00'; // Full day or 4 hours
+                    if ($daySeconds >= 14400) {
+                        $payableHours = $daySeconds >= 28800 ? '08:00' : '04:00';
                     } else {
-                        $payableHours = '00:00'; // Less than 4 hours
+                        $payableHours = '00:00';
                     }
                 }
             }
-        
+
             // Add weekend hours
             if ($isWeekend) {
-                $totalWeekendSeconds += 8 * 3600; // 8 hours for weekend
+                $totalWeekendSeconds += 8 * 3600; 
             }
-        
+
             // Convert payableHours to seconds and update total payable time
             if ($payableHours !== '-') {
                 list($hours, $minutes) = explode(':', $payableHours);
                 $payableSeconds = ($hours * 3600) + ($minutes * 60);
-        
+
                 $totalPayableSeconds += $payableSeconds;
             } else {
                 $payableHours = '-';
             }
-        
+
             // Return the attendance data for the day, including 'payableHours'
             return [
                 'date' => $date,
@@ -252,13 +284,13 @@ if ($attendance) {
                 'totalHours' => $dayHours,
                 'check_in_times' => $checkInTimes,
                 'check_out_times' => $checkOutTimes,
-                'payableHours' => $payableHours, // Include payableHours in the return array
+                'payableHours' => $payableHours,
                 'status' => $status,
                 'employeeCreationDate' => $employeeCreationDate,
-                'holiday'=>$holiday,
+                'holiday' => $holiday,
             ];
         })->toArray();
-        
+
 
         // Calculate total hours for the visible page
         $this->totalHoursInSeconds = array_sum(array_map(function ($entry) {
@@ -306,11 +338,11 @@ if ($attendance) {
     }
     private function convertToDays($seconds)
     {
-        $hoursPerDay = 8; // 8 hours per workday
-        $hoursWorked = $seconds / 3600; // Convert seconds to hours
+        $hoursPerDay = 8;
+        $hoursWorked = $seconds / 3600;
         $days = $hoursWorked / $hoursPerDay;
 
-        return round($days, 1); // Round to 1 decimal place for accuracy (e.g., 0.5 days)
+        return round($days, 1);
     }
     // Formats seconds into days and hours
     private function formatHours($seconds)

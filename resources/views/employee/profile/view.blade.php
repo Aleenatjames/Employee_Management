@@ -1,6 +1,6 @@
 @extends('layouts.employee_dashboard')
 
-@section('title', 'Dashboard')
+@section('title', 'Project-Allocation-Create')
 
 @section('sidebar')
     @parent
@@ -10,9 +10,9 @@
 
 @section('content')
        
-<div class="h-full ml-14  md:ml-64 mt-0 bg-gray-100 dark:bg-gray-700">
-      
- @livewire('dashboard')
+<div class="h-full ml-14 mt-14 mb-10 md:ml-64 bg-gray-100">
+    
+ @livewire('profile.view')
 </div> 
 
 

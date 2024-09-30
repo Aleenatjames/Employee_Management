@@ -198,18 +198,18 @@
                         @endphp
 
                         <div class="relative timeline-container" style="height: 2px; width: 1300px; background-color: 
-    @if ($isHoliday)
-        #9cc6e5
-    @elseif ($isWeekend)
-        #ffe5a3
-    @elseif ($isFutureDate)
-        #e2e8f0
-    @elseif ($isToday)
-        #e2e8f0
-    @else
-        {{ ($data['status'] == 'aa' || $data['status'] == 'ap' || $data['status'] == 'pa') ? '#e53e3e' : '#e2e8f0' }}
-    @endif
-;">
+                            @if ($isHoliday)
+                                #9cc6e5
+                            @elseif ($isWeekend)
+                                #ffe5a3
+                            @elseif ($isFutureDate)
+                                #e2e8f0
+                            @elseif ($isToday)
+                                #e2e8f0
+                            @else
+                                {{ ($data['status'] == 'aa' || $data['status'] == 'ap' || $data['status'] == 'pa') ? '#e53e3e' : '#e2e8f0' }}
+                            @endif
+                        ;">
 
                             <!-- Display status or labels based on conditions -->
                             @if ($isHoliday)
@@ -246,7 +246,7 @@
                             <div class="absolute" style="{{ $markerStyle }} background-color: {{ $markerColor }};"></div>
                             @endforeach
                             @elseif ($isWeekend)
-                            <span class="absolute" style="top: -10px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: normal; color: #666; padding: 3px 6px; background-color: #FFF; border: 1px solid #ffe5a3; border-radius: 5px;">
+                            <span class="absolute dark:bg-blue-200 bg-white" style="top: -10px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: normal; color: #666; padding: 3px 6px; border: 1px solid #ffe5a3; border-radius: 5px;">
                                 Weekend
                             </span>
                             @elseif (!$isFutureDate)

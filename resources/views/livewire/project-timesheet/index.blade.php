@@ -161,7 +161,14 @@
                 @endif
                 <td class="px-4 py-2">{{ \Carbon\Carbon::parse($timesheet->date)->format('d M Y') }}</td>
                 <td class="px-4 py-2">{{ $timesheet->taskid ?: '' }}</td>
-                <td class="px-4 py-2">{{ $timesheet->comment }}</td>
+                <td class="px-4 py-2">  @php
+                        $commentWords = explode(' ', $timesheet->comment);
+                        $limitedComment = implode(' ', array_slice($commentWords, 0, 4));
+                        if (count($commentWords) > 4) {
+                            $limitedComment .= '...';
+                        }
+                    @endphp
+                    {{ $limitedComment }}</td>
                 <td class="px-4 py-2">{{ $timesheet->time }}</td>
                                     <td class="px-4 py-2 flex items-center">
                                         <a href="{{ route('employee.timesheet.edit',$timesheet->id) }}" class="px-3 py-1 mr-2 text-gray-500 dark:text-gray-100 rounded hover:text-gray-600 dark:hover:bg-gray-700">

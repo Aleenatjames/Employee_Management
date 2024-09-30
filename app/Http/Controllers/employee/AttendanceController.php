@@ -110,13 +110,13 @@ class AttendanceController extends Controller
         $checkOutIndex = 0;
     
         $lastCheckInTime = null;
+        $lastCheckOutTime = null;
     
-        // Update check-in and check-out times only if they are different
         foreach ($attendanceEntries as $entry) {
             if ($entry->entry_type == 1) { // Check-In
                 if (isset($checkInTimes[$checkInIndex])) {
                     $newCheckInTime = $checkInTimes[$checkInIndex];
-    
+        
                     // Only update if the new time is different from the existing time
                     if ($entry->entry_time != $newCheckInTime) {
                         Log::info('Updating check-in time', [
@@ -124,21 +124,38 @@ class AttendanceController extends Controller
                             'old_time' => $entry->entry_time,
                             'new_time' => $newCheckInTime,
                         ]);
-    
+        
                         $entry->entry_time = $newCheckInTime;
                         $entry->modified_by = auth()->guard('employee')->id(); // Set the user who modified    
                         $entry->save();
+        
+                        // Check for the next entry (check-out)
+                        if (isset($attendanceEntries[$checkInIndex + 1]) && $attendanceEntries[$checkInIndex + 1]->entry_type == 0) {
+                            $checkOutEntry = $attendanceEntries[$checkInIndex + 1];
+                            $checkOutTime = Carbon::parse($checkOutEntry->entry_time);
+                            $newCheckInTimeParsed = Carbon::parse($newCheckInTime);
+                            $duration = abs($checkOutTime->diffInSeconds($newCheckInTimeParsed));
+        
+                            Log::info('Updating duration for check-in adjustment', [
+                                'check_out_entry_id' => $checkOutEntry->id,
+                                'duration' => $duration,
+                            ]);
+        
+                            // Update the duration for the corresponding check-out entry
+                            $checkOutEntry->duration = $duration;
+                            $checkOutEntry->save();
+                        }
+        
+                        $lastCheckInTime = Carbon::parse($newCheckInTime);
                     }
-    
-                    $lastCheckInTime = Carbon::parse($newCheckInTime);
                     $checkInIndex++;
                 }
             }
-    
+        
             if ($entry->entry_type == 0) { // Check-Out
                 if (isset($checkOutTimes[$checkOutIndex])) {
                     $newCheckOutTime = $checkOutTimes[$checkOutIndex];
-    
+        
                     // Only update if the new time is different from the existing time
                     if ($entry->entry_time != $newCheckOutTime) {
                         Log::info('Updating check-out time', [
@@ -146,32 +163,32 @@ class AttendanceController extends Controller
                             'old_time' => $entry->entry_time,
                             'new_time' => $newCheckOutTime,
                         ]);
-    
+        
                         $entry->entry_time = $newCheckOutTime;
                         $entry->modified_by = auth()->guard('employee')->id(); // Set the user who modified
                         $entry->save();
-    
+        
                         // Calculate and save the duration
                         if ($lastCheckInTime) {
                             $checkOutTime = Carbon::parse($newCheckOutTime);
                             $duration = abs($checkOutTime->diffInSeconds($lastCheckInTime));
-    
+        
                             Log::info('Updating duration for check-out', [
                                 'entry_id' => $entry->id,
                                 'duration' => $duration,
                             ]);
-    
+        
                             $entry->duration = $duration;
                             $entry->save();
-    
-                            $lastCheckInTime = null; // Reset check-in time after saving duration
                         }
+        
+                        $lastCheckInTime = Carbon::parse($newCheckOutTime);
                     }
-    
                     $checkOutIndex++;
                 }
             }
         }
+        
     
         // Redirect back with a success message
         return redirect()->route('employee.attendance')->with('success', 'Attendance times updated successfully.');
