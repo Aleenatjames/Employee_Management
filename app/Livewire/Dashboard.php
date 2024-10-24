@@ -5,6 +5,8 @@ namespace App\Livewire;
 use App\Models\Attendance;
 use App\Models\Employee;
 use App\Models\Holiday;
+use App\Models\LeaveAllocation;
+use App\Models\LeaveType;
 use App\Models\Project;
 use App\Models\ProjectTimesheet;
 use Illuminate\Support\Carbon;
@@ -55,6 +57,7 @@ class Dashboard extends Component
     public $lastWeekDeviation;
     public $lastMonthDeviation;
     public $projects;
+    public $leaveData=[];
 
 
 
@@ -146,6 +149,30 @@ class Dashboard extends Component
 
         // Consolidate weekly and monthly hours for training
         $this->consolidateHours($today);
+
+       // Fetch all leave types
+    $leaveTypes = LeaveType::all();
+
+    // Fetch leave allocations for the employee
+    $leaveAllocations = LeaveAllocation::where('employee_id', $employeeId)->get();
+
+    // Loop through each leave type and fetch the related allocation data
+    foreach ($leaveTypes as $leaveType) {
+        // Find the corresponding allocation for this leave type
+        $leaveAllocation = $leaveAllocations->where('leave_type', $leaveType->id)->first();
+
+        // If allocation exists, set allocated and used days, otherwise set to 0
+        $allocatedDays = $leaveAllocation ? $leaveAllocation->allocated_days : 0;
+        $usedDays = $leaveAllocation ? $leaveAllocation->used : 0;
+
+        
+
+        // Use the leave type name as the key in the leaveData array
+        $this->leaveData[$leaveType->name] = [
+            'allocated' => $allocatedDays,
+            'used' => $usedDays,
+        ];
+    }
     }
     // Consolidate weekly and monthly training hours
     protected function consolidateHours($today)
@@ -284,6 +311,8 @@ class Dashboard extends Component
             $today->copy()->subMonth()->startOfMonth(),
             $today->copy()->subMonth()->endOfMonth()
         );
+
+       
     }
 
     protected function calculateTotalHours($timesheets)

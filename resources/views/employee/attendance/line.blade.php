@@ -10,10 +10,8 @@
 
 @section('content')
 
-<div class="h-full mt- mb- md:ml-72">
-    <section class="mt-10 mx- ">
-       
-            <div class="mt-20 w-full">
+<div class="px-10 mt- mb- md:ml-64">    
+            <div class="mt-16">
                 @include('elements.check-button')
                 <!-- Success Message -->
                 @if (session()->has('error'))

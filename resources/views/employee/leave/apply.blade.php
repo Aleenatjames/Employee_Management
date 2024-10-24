@@ -12,7 +12,7 @@
        
 <div class="h-full ml-14 mt-14 mb-10 md:ml-64 bg-gray-100 dark:bg-gray-700">
     
- @livewire('leave-tracker.list-view')
+ @livewire('leave-tracker.apply')
 </div> 
 
 

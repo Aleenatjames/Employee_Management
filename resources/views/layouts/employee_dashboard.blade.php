@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> @yield('title')</title>
+  @livewireStyles
   @vite('resources/css/app.css')
 
   @vite('resources/js/app.js')
@@ -12,7 +13,7 @@
 </head>
 
 <body>
-  @livewireStyles
+
   @livewireScripts
 
   @section('sidebar')
@@ -36,108 +37,33 @@
             <span class="ml-2 text-sm tracking-wide truncate">Dashboard</span>
           </a>
         </li>
-      
-       
-         
-        <li>
-        <li class="opcion-con-desplegable mr-2">
+
+        <li class="opcion-con-desplegable">
           <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
             <div class="flex items-center">
-            <span class="inline-flex justify-center items-center ml-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-</svg>
-
-            </span>
-
-              <span class="ml-4 text-sm tracking-wide truncate">Timesheet</span>
+              <span class="inline-flex justify-center items-center ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                </svg>
+                <span class="ml-3">Attendance</span>
             </div>
             <i class="fas fa-chevron-down text-xs"></i>
           </div>
           <ul class="desplegable ml-4 hidden">
             <li>
-              <a href="{{route('employee.time-entries')}}" class="block p-2 hover:bg-gray-700 flex items-center">
+              <a href="{{route('employee.attendance.line')}}" class=" p-2 hover:bg-gray-700 flex items-center">
                 <i class="fas fa-chevron-right mr-2 text-xs"></i>
-               Timesheet Entry
+                List View
               </a>
             </li>
             <li>
-              <a href="{{ route('employee.timesheet') }}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                Timesheet List
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('employee-report.index') }}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-               Employee Report
-              </a>
-            </li>
-          </ul>
-
-        </li>
-        <li class="opcion-con-desplegable">
-        <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
-            <div class="flex items-center">
-            <span class="inline-flex justify-center items-center ml-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-</svg>
-
-
-            </span>
-              <span class="ml-4">Project</span>
-            </div>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </div>
-          <ul class="desplegable ml-4 hidden">
-            <li>
-              <a href="{{route('employee.projects.index')}}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-               Project List
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('employee.project-allocations.index') }}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                Project Allocations
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('employee.project-groups.index') }}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                Project Groups
-              </a>
-            </li>
-          </ul>
-
-        </li>
-        <li class="opcion-con-desplegable">
-        <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
-            <div class="flex items-center">
-            <span class="inline-flex justify-center items-center ml-3">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
-</svg>
- <span class="ml-3">Attendance</span>
-            </div>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </div>
-          <ul class="desplegable ml-4 hidden">
-            <li>
-              <a href="{{route('employee.attendance.line')}}" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-               List View
-              </a>
-            </li>
-            <li>
-              <a href="{{ route('employee.attendance') }}" class="block p-2 hover:bg-gray-700 flex items-center">
+              <a href="{{ route('employee.attendance') }}" class=" p-2 hover:bg-gray-700 flex items-center">
                 <i class="fas fa-chevron-right mr-2 text-xs"></i>
                 Tabular View
               </a>
             </li>
             <li>
-              <a href="{{ route('employee.attendance.calendar') }}" class="block p-2 hover:bg-gray-700 flex items-center">
+              <a href="{{ route('employee.attendance.calendar') }}" class=" p-2 hover:bg-gray-700 flex items-center">
                 <i class="fas fa-chevron-right mr-2 text-xs"></i>
                 Calendar View
               </a>
@@ -145,18 +71,133 @@
           </ul>
 
         </li>
-       
-        <a href="{{route('holiday.index')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
-            <span class="inline-flex justify-center items-center ml-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-</svg>
 
-            </span>
-            <span class="ml-2 text-sm tracking-wide truncate">Holidays</span>
-          </a>
+        <li>
+        <li class="opcion-con-desplegable mr-2">
+          <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
+            <div class="flex items-center">
+              <span class="inline-flex justify-center items-center ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                </svg>
+
+              </span>
+
+              <span class="ml-4 text-sm tracking-wide truncate">Timesheet</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
+          <ul class="desplegable ml-4 hidden">
+            <li>
+              <a href="{{route('employee.time-entries')}}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Timesheet Entry
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.timesheet') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Timesheet List
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee-report.index') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Employee Report
+              </a>
+            </li>
+          </ul>
+
         </li>
-      
+        <li class="opcion-con-desplegable">
+          <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
+            <div class="flex items-center">
+              <span class="inline-flex justify-center items-center ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                </svg>
+
+
+              </span>
+              <span class="ml-4">Project</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
+          <ul class="desplegable ml-4 hidden">
+            <li>
+              <a href="{{route('employee.projects.index')}}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Project List
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.project-allocations.index') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Project Allocations
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.project-groups.index') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Project Groups
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="opcion-con-desplegable">
+          <div class="flex items-center justify-between p-2 hover:bg-gray-700 cursor-pointer">
+            <div class="flex items-center">
+              <span class="inline-flex justify-center items-center ml-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5" />
+                  <text x="50%" y="50%" text-anchor="middle" dy=".7em" font-size="8" fill="green" font-weight="10">!</text>
+                </svg>
+                <span class="ml-3">Leave Tracker</span>
+            </div>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
+          <ul class="desplegable ml-4 hidden">
+            <li>
+              <a href="{{route('employee.leave.list')}}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                List View
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.leave.index') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+               Leave Types
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.leave.category') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Categories
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('employee.leave.application') }}" class=" p-2 hover:bg-gray-700 flex items-center">
+                <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                Leave Application
+              </a>
+            </li>
+          </ul>
+
+        </li>
+
+        <a href="{{route('holiday.index')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
+          <span class="inline-flex justify-center items-center ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+            </svg>
+
+          </span>
+          <span class="ml-2 text-sm tracking-wide truncate">Holidays</span>
+        </a>
+        </li>
+
         <li>
           <a href="#" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-gray-600 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-gray-800 pr-6">
             <span class="inline-flex justify-center items-center ml-4">
@@ -271,8 +312,8 @@
       </div>
     </div>
   </div>
-      <!-- ./Header -->
-     <!-- Dark mode setup script -->
+  <!-- ./Header -->
+  <!-- Dark mode setup script -->
   <script>
     const setup = () => {
       const getTheme = () => {
@@ -297,23 +338,23 @@
       }
     }
   </script>
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          // Obtener todas las opciones principales con desplegables
-          const opcionesConDesplegable = document.querySelectorAll(".opcion-con-desplegable");
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Obtener todas las opciones principales con desplegables
+      const opcionesConDesplegable = document.querySelectorAll(".opcion-con-desplegable");
 
-          // Agregar evento de clic a cada opción principal
-          opcionesConDesplegable.forEach(function(opcion) {
-            opcion.addEventListener("click", function() {
-              // Obtener el desplegable asociado a la opción
-              const desplegable = opcion.querySelector(".desplegable");
+      // Agregar evento de clic a cada opción principal
+      opcionesConDesplegable.forEach(function(opcion) {
+        opcion.addEventListener("click", function() {
+          // Obtener el desplegable asociado a la opción
+          const desplegable = opcion.querySelector(".desplegable");
 
-              // Alternar la clase "hidden" para mostrar u ocultar el desplegable
-              desplegable.classList.toggle("hidden");
-            });
-          });
+          // Alternar la clase "hidden" para mostrar u ocultar el desplegable
+          desplegable.classList.toggle("hidden");
         });
-      </script>
+      });
+    });
+  </script>
 </body>
 
 </html>

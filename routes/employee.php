@@ -10,6 +10,7 @@ use App\Http\Controllers\employee\ProjectGroups;
 use App\Http\Controllers\employee\TimesheetController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\LeaveController;
+use App\Livewire\LeaveTracker\DivisionForm;
 use Illuminate\Support\Facades\Route;
 
 //Employee Portal
@@ -68,8 +69,15 @@ Route::middleware('employee.auth')->group(function () {
     Route::get('/employee/attendance/view', [AttendanceController::class,'line'])->name('employee.attendance.line');
     Route::get('/employee/attendance/calendar', [AttendanceController::class,'calendar'])->name('employee.attendance.calendar');
 
-    Route::get('/employee/leave/view', [LeaveController::class,'list'])->name('employee.leave');
-
     Route::get('/employee/profile/view',[ProfileController::class,'view'])->name('employee.profile');
-
+    
+    Route::get('/employee/leave/view', [LeaveController::class,'list'])->name('employee.leave.list');
+    Route::get('/leave/division-form', [LeaveController::class,'division'])->name('employee.leave.category');
+    Route::get('/leave/types/create', [LeaveController::class,'create'])->name('employee.leave.create');
+    Route::get('/leave/types/index', [LeaveController::class,'index'])->name('employee.leave.index');
+    Route::get('/leave/types/edit/{leaveId}', [LeaveController::class,'edit'])->name('employee.leave.edit');
+    Route::get('/leave/apply', [LeaveController::class,'apply'])->name('employee.leave.apply');
+    Route::get('/leave/application', [LeaveController::class,'application'])->name('employee.leave.application');
+    Route::get('/leave/application/show/{applicationId}', [LeaveController::class,'show'])->name('employee.leave.show');
+   
 });

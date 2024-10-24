@@ -38,8 +38,7 @@
             startTimer();
         }
 
-        // Poll server for current status every 10 seconds
-        setInterval(checkServerStatus, 10000);
+       
 
         // Listen for localStorage changes
         window.addEventListener('storage', function(event) {
@@ -148,45 +147,7 @@
         localStorage.setItem(`totalSeconds_${employeeId}`, totalSeconds);
     }
 
-    function checkServerStatus() {
-        $.ajax({
-            url: '/get-check-in-status',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                if (data.isCheckedIn !== isCheckedIn) {
-                    isCheckedIn = data.isCheckedIn;
-                    updateButtonState();
-                    if (isCheckedIn) {
-                        startTimer();
-                    } else {
-                        stopTimer();
-                    }$.ajax({
-            url: '/get-check-in-status',
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                if (data.isCheckedIn !== isCheckedIn) {
-                    isCheckedIn = data.isCheckedIn;
-                    updateButtonState();
-                    if (isCheckedIn) {
-                        startTimer();
-                    } else {
-                        stopTimer();
-                    }
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to retrieve check-in status:', status, error);
-            }
-        });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to retrieve check-in status:', status, error);
-            }
-        });
-    }
+   
 </script>
 <script>
     $(document).ready(function() {

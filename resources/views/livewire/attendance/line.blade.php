@@ -1,10 +1,10 @@
 <div>
 
-    <div class="flex justify-between items-center mb-4 mt-10 bg-gray-100 dark:bg-gray-700 w-full">
+    <div class="flex justify-between items-center mb-4 mt-10 bg-gray-100 dark:bg-gray-700 l">
         <!-- Centered Date Display and Navigation -->
 
         <!-- Previous Week/Month Arrow -->
-        <div class="mb-4 justify-start ml-2 ">
+        <div class="mb-4 justify-start  ">
             <select id="employee-select" wire:model="selectedEmployee" wire:change="loadAttendanceData" class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-400 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full py-1.5 mt-4">
                 <option value="">Select Employee</option>
                 @if(!empty($reportingEmployees))
@@ -105,7 +105,7 @@
         {{ session('success') }}
     </div>
     @endif
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class="pr-10 text-sm text-left text-gray-500 dark:text-gray-400 w-full">
         <thead class="text-xs text-gray-700 dark:text-gray-100 uppercase bg-gray-50 dark:bg-gray-700">
             <tr>
                 <th class="cursor-pointer px-4 py-2">Date</th>
@@ -152,7 +152,7 @@
             usort($markers, fn($a, $b) => $a['position'] <=> $b['position']);
                 @endphp
 
-                <tr class="h-20">
+                <tr class="h-20 " style=" width: 1200px">
                     <td class="px-4 py-1">{{ \Carbon\Carbon::parse($data['date'])->format('D, d') }}</td>
                     <td class="px-4 py-1">{{ $data['firstInTime'] ? $data['firstInTime']->format('H:i') : '-' }}</td>
                     <td class="pl-2 pr-1 py-1">
@@ -184,7 +184,7 @@
                             <div class="absolute" style="left: -20px; top: -4px; height: 10px; width: 10px; border-radius: 50%; background-color: {{  $anyCheckInBefore9AM ? '#b2d7ad' : ($checkOutBefore9AM ? '#e53e3e' : '#ccc') }};"></div>
 
                             <!-- Second dot: Red if any check-out is before 9 AM, otherwise gray -->
-                            <div class="absolute" style="left: -26px; top: 0px; height: 5px; width: 5px; border-radius: 50%; background-color: {{ $anyCheckInBefore9AM ? '#b2d7ad' : '#ccc' }};"></div>
+                            <div class="absolute" style="left: -27px; top: 0px; height: 5px; width: 5px; border-radius: 50%; background-color: {{ $anyCheckInBefore9AM ? '#b2d7ad' : '#ccc' }};"></div>
 
                             <!-- Third dot: Green if any check-in is before 9 AM, otherwise red if any check-out is before 9 AM, otherwise gray -->
                             <div class="absolute" style="left: -40px; top: -4px; height: 10px; width: 10px; border-radius: 50%; background-color: {{ $anyCheckInBefore9AM ? '#b2d7ad' : ($checkOutBefore9AM ? '#e53e3e' : '#ccc') }};"></div>
@@ -197,7 +197,7 @@
                         $isWeekend = \Carbon\Carbon::parse($data['date'])->isWeekend();
                         @endphp
 
-                        <div class="relative timeline-container" style="height: 2px; width: 1300px; background-color: 
+                        <div class="relative timeline-container" style="height: 2px; width: 1240px; background-color: 
                             @if ($isHoliday)
                                 #9cc6e5
                             @elseif ($isWeekend)
@@ -225,6 +225,7 @@
                             <span class="absolute" style="top: -10px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: normal; color: #666; padding: 3px 6px; background-color: #FFF; border: 1px solid #9cc6e5; border-radius: 5px;">
                                 {{ $holidayLabel }}
                             </span>
+
 
                             @elseif ($isToday||$data['status'] == 'pp')
                             @foreach($markers as $marker)
@@ -322,7 +323,7 @@
     </table>
 
     <!-- Time scale aligned under the timeline -->
-    <div class="relative mt-4" style="width: 1300px; margin-left: 180px;">
+    <div class="relative mt-4" style="width: 1200px; margin-left: 180px;">
         <div class="flex justify-between text-xs text-gray-700 dark:text-gray-100">
             <div class="text-center" style="width: calc(100% / 9);">9 AM</div>
             <div class="text-center" style="width: calc(100% / 9);">10 AM</div>

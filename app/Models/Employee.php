@@ -56,4 +56,15 @@ public function company()
     {
         return $this->hasMany(Attendance::class, 'employee_id');
     }
+    // Employee.php (Model)
+public function manager()
+{
+    return $this->belongsTo(Employee::class, 'reporting_manager');
+}
+public function reportingManagers()
+{
+    return $this->manager(); // This retrieves the direct manager
+}
+
+
 }

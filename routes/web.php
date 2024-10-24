@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DepartmentController;
 
 use App\Http\Controllers\EmployeeController;
@@ -65,10 +64,12 @@ Route::middleware('auth')->group(function () {
      Route::put('/employees/{id}', [EmployeeController::class, 'update'])->name('employees.update');
      Route::delete('/employees/{id}/delete', [EmployeeController::class, 'destroy'])->name('employees.destroy');
      Route::put('employees/toggle-status/{id}', [EmployeeController::class, 'toggleStatus'])->name('employees.toggleStatus');
+     Route::get('/get-child-divisions/{parent_id}', [EmployeeController::class, 'getChildDivisions'])->name('getChildDivisions');
+     Route::delete('/delete-employee-division/{id}', [EmployeeController::class, 'destroydivision']);
+
+
 
      Route::get('/employees/login', [EmployeeController::class, 'login'])->name('employees.login');
 });
-
-
 
 require __DIR__.'/auth.php';
